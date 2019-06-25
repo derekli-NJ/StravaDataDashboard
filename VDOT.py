@@ -1,4 +1,6 @@
 import openpyxl
+from units import unit
+import units.predefined
 
 
 def enter_data(athlete_info, race_data):
@@ -22,14 +24,33 @@ def enter_data(athlete_info, race_data):
     else:
         print ("Prompt user for birthdate")
 
-    print (athlete_info.weight, athlete_info.max_heartrate)
-    sheetname['C3'] # Weight
-    sheetname['E3'] # HRmax
+    if (athlete_info.weight != None): 
+        sheetname['C3'] = athlete_info.weight # Weight
+    else:
+        print ("Prompt user for weight")
+
+    if (athlete_info.max_heartrate != None):
+        sheetname['E3'] = athlete_info.max_heartrate# HRmax
+    else:
+        print ("Prompt user for heart rate max")
 
 
+    meter = unit('m')
+
+
+    race_distances = { "5k" : meter(5000), "8k" : meter(8000), "10k" : meter(10000), "12k" : meter(12000), "15k" : meter(15000), "1/2 Mar" : meter(21097.5), "Marathon" : meter(42195)}
+    
+    filled_distance = False
+    for race in race_distances:
+        if (abs(race_distances[race] - race_data[0].distance) < 0.1 * race_distances[race]):   
+            sheetname['E6'] = race #Enter distance (need to edit S5 if Custom)
+            filled_distance = True
+    if (not filled_distance):
+        sheetname['E6'] = "Custom" 
+        sheetname['S5'] = race_data[0].distance
+    
 
     sheetname['G6'] = str('3:25:24') #Edits the race time
-    sheetname['E6'] #Enter distance (need to edit S5 if Custom)
 
     sheetname.cell(row=20,column=22).value = "something" #write to row 1,col 1 explicitly, this type of writing is useful to write something in loops
 
