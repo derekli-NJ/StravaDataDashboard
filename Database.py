@@ -24,3 +24,48 @@ def create_database(vdot_data):
     connection.commit()
     connection.close()
 
+def update_database(vdot_data):
+    
+    connection = sqlite3.connect("race.db")
+
+    cursor = connection.execute("SELECT id from race")
+
+    existing_id = set()
+    for id_val in cursor:
+       existing_id.add(id_val[0]) 
+
+    print (existing_id)
+    curs = connection.cursor()
+    for key in vdot_data:
+        if int(key) not in existing_id:
+            curs.execute('''INSERT INTO race(id, distance, time, vdot, date) VALUES(?, ?, ?, ?, ?)''',  (key, vdot_data[key][1]['entered']['distance'], vdot_data[key][1]['entered']['time'], vdot_data[key][1]['vdot'], str(vdot_data[key][0].start_date)))
+
+    connection.commit()
+    connection.close()
+
+
+def query_database():
+    connection = sqlite3.connect("race.db")
+
+    cursor = connection.execute("SELECT id, distance, time, vdot, date from race")
+
+    race_data = []
+    for row in cursor:
+        race_data.append((row[0], (row[1], row[2], row[3], row[4])))
+
+    return (dict(race_data))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
