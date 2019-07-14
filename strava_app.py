@@ -1,6 +1,7 @@
 from info_retriever import get_race_data, get_athlete_info
 from vdot import format_data, calculate_vdot
 from database import create_database, update_database, query_database
+from plot import plot
 import os.path
 from os import path
 
@@ -21,3 +22,5 @@ else:
 
 queried_data = query_database()
 print(queried_data)
+
+plot(queried_data)
