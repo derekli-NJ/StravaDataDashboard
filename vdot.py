@@ -64,7 +64,6 @@ def calculate_vdot(race_data):
         json_response = json.loads(brotli.decompress(response.content).decode("ascii"))
         #print (json_response['entered']['distance'])
         #print (json_response['entered']['time'])
-        #print (json_response['vdot'])
 
         vdot_data.append((race.upload_id, [race, json_response]))
 

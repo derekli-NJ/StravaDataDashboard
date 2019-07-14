@@ -56,16 +56,3 @@ def query_database():
     return (dict(race_data))
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    
