@@ -2,10 +2,10 @@ from info_retriever import get_race_data, get_athlete_info
 from vdot import format_data, calculate_vdot
 from database import create_database, update_database, query_database
 from plot import plot
-import os.path
+import os.path, config
 from os import path
 
-access_token = "00fda15f98d66ce2be38baed47c89890c917ec59"
+access_token = config.access_token
 
 
 athlete_info = get_athlete_info(access_token)
