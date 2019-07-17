@@ -1,2 +1,2 @@
-access_token = "00fda15f98d66ce2be38baed47c89890c917ec59"
+access_token = "access_token here"
 refresh_token = "refresh_token here"
