@@ -66,6 +66,9 @@ def calculate_vdot(race_data):
         #print (json_response['entered']['time'])
 
         vdot_data.append((race.upload_id, [race, json_response]))
+    
+
+    #print (vdot_data)
 
     formatted_vdot_data = dict(vdot_data)
     return (formatted_vdot_data)

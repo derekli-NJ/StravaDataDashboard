@@ -5,7 +5,7 @@ from plot import plot
 import os.path
 from os import path
 
-access_token = "7449d7e1d2e8c7f48919c058e19f117af563ed2a"
+access_token = "00fda15f98d66ce2be38baed47c89890c917ec59"
 
 
 athlete_info = get_athlete_info(access_token)
@@ -21,6 +21,6 @@ else:
     create_database(vdot_data)
 
 queried_data = query_database()
-print(queried_data)
+#print(queried_data)
 
 plot(queried_data)
