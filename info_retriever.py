@@ -1,20 +1,7 @@
 from stravalib import Client
 
-
-
-def get_race_data(access_token):
+def get_activity_data(access_token):
     client = Client(access_token)
-    print(client.get_athlete()) # Get current athlete details
-
-#activity = client.get_activity(1972530211)
-#print (activity)
-
-#race = client.get_running_races(2018)
-
-
-
-#for i in range(10):
-        #print (next(race))
 
     activity_stats = client.get_athlete_stats()
 
@@ -27,30 +14,36 @@ def get_race_data(access_token):
     all_activities = client.get_activities()
 
     count = 0
+    run_activities = []
+    swim_activities = []
+    bike_activities = []
+    for activity in all_activities:
+        if (activity.type == "Run"):
+            run_activities.append(activity) 
+        if (activity.type == "Swim"):
+            swim_activities.append(activity)
+        if (activity.type == "Ride"):
+            bike_activities.append(activity)
+    return ({"Runs": run_activities, "Swims" : swim_activities, "Rides": bike_activities})
+
+def get_run_race_data(run_activities):
     races = []
-    while count < run_count:
-        activity = next(all_activities)
-        if (activity.manual):
-            count += 1
-        if (str(activity.type) != "Run"):
-            continue
-        count += 1
-        if (str(activity.workout_type) == "1" and str(activity.type) == "Run"):
-            #print(str(activity.name) + " and " + str(activity.workout_type))
+    for activity in run_activities:
+        if (str(activity.workout_type) == "1"):
             races.append(activity)
     return races
-#for activity in client.get_activities(after = "2010-01-01T00:00:00Z",  limit=5):
-        #print ("type = " + activity.type)
+
+def get_run_hr_data(run_activities):
+    runs_hr_data = []
+    for activity in run_activities:
+        if (activity.has_heartrate):
+            runs_hr_data.append(activity)
+    return runs_hr_data
 
 
 def get_athlete_info(access_token): 
     client = Client(access_token)
     curr_athlete = client.get_athlete() # Get current athlete details
     return curr_athlete
-
-
-
-
-
 
 
