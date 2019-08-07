@@ -69,6 +69,7 @@ def update_hr_database(run_hr_data):
 
     cursor = connection.execute("SELECT id from hr_data")
 
+    curs = connection.cursor()
     existing_id = find_existing_id(cursor)
     for activity in run_hr_data:
         if activity.id not in existing_id:

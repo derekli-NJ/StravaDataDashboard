@@ -9,7 +9,7 @@ from numpy.polynomial.polynomial import polyfit
 from datetime import datetime
 
 
-def plot(data):
+def plot_vdot_race(data):
     #CSS element for the tooltip label
     css = """
 div
@@ -30,7 +30,7 @@ div
 
 
     label = []
-    print (data)
+    #print (data)
     for key in data:
         label.append("Race: " + str(data[key][1]) + "<br/>" + "VDOT: " + str(data[key][3]))
 
@@ -55,7 +55,7 @@ div
 
     plugins.connect(fig, plugins.Reset(), plugins.BoxZoom(), plugins.Zoom(), tooltip)
 
-    mpld3.show()
+    return mpld3.fig_to_html(fig)
 
 def plot_beats_per_mile(data):
     #divide meters by this factor to get in terms of miles
@@ -120,5 +120,5 @@ def plot_beats_per_mile(data):
 
     plugins.connect(fig, plugins.Reset(), plugins.BoxZoom(), plugins.Zoom())
 
-    mpld3.show()
+    return mpld3.fig_to_html(fig)
 
