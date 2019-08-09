@@ -3,6 +3,8 @@ from stravalib import Client
 def get_activity_data(access_token):
     client = Client(access_token)
 
+    athlete = client.get_athlete()
+
     activity_stats = client.get_athlete_stats()
 
     run_count = activity_stats.all_run_totals.count
@@ -13,18 +15,21 @@ def get_activity_data(access_token):
 
     all_activities = client.get_activities()
 
-    count = 0
     run_activities = []
     swim_activities = []
     bike_activities = []
+
+    calorie_count = 0.0
     for activity in all_activities:
         if (activity.type == "Run"):
             run_activities.append(activity) 
+            calorie_count += (float(activity.distance) / 1000) * float(athlete.weight) * 1.036
         if (activity.type == "Swim"):
             swim_activities.append(activity)
         if (activity.type == "Ride"):
             bike_activities.append(activity)
-    return ({"Runs": run_activities, "Swims" : swim_activities, "Rides": bike_activities})
+
+    return ({"Runs": run_activities, "Swims" : swim_activities, "Rides": bike_activities, "Calorie_Count" : calorie_count})
 
 def get_run_race_data(run_activities):
     races = []
@@ -39,7 +44,6 @@ def get_run_hr_data(run_activities):
         if (activity.has_heartrate):
             runs_hr_data.append(activity)
     return runs_hr_data
-
 
 def get_athlete_info(access_token): 
     client = Client(access_token)

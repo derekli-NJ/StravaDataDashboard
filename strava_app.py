@@ -9,6 +9,8 @@ lock = Lock()
 app = Flask(__name__)
 app.config.from_envvar('APP_SETTINGS')
 
+calorie = 0
+
 def draw_fig(fig_type):
     """Returns html equivalent of matplotlib figure
     Parameters
@@ -21,6 +23,7 @@ def draw_fig(fig_type):
 
     with lock:
         data = strava_data.setup()
+        calorie = data['calorie_count']
         if fig_type == "hr_per_mile":
             return strava_data.plot_beats_per_mile_fig(data[fig_type])
         elif fig_type == "vdot_race":
@@ -33,7 +36,9 @@ def login():
     c = Client()
     url = c.authorization_url(client_id=app.config['STRAVA_CLIENT_ID'],
                               redirect_uri=url_for('.logged_in', _external=True),
-                              approval_prompt='auto')
+                              approval_prompt='auto',
+                              scope = ['read', 'profile:read_all', 'activity:read'],
+                              state = None)
     return render_template('login.html', authorize_url = url)
 
 @app.route("/strava-oauth")
@@ -54,22 +59,25 @@ def logged_in():
         access_token = client.exchange_code_for_token(client_id=app.config['STRAVA_CLIENT_ID'],
                                                       client_secret=app.config['STRAVA_CLIENT_SECRET'],
                                                       code=code)
-        print (config.access_token)
         config.access_token = access_token['access_token']
         config.refresh_token = access_token['refresh_token']
         config.expires_at = access_token['expires_at']
-        print ("HERE")
-        print (access_token)
         print (config.access_token)
-        # Probably here you'd want to store this somewhere -- e.g. in a database.
-        strava_athlete = client.get_athlete()
 
-        return render_template('index.html')
+        #Format code later so I don't have to call setup twice
+        data = strava_data.setup()
+        formatted_calorie = int(data['calorie_count'])
+        formatted_calorie = f'{formatted_calorie:,}'
+        return render_template('index.html', calorie = formatted_calorie)
 
 
 @app.route('/home')
 def home():
-    return render_template('index.html')
+    #Format code later so I don't have to call setup twice
+    data = strava_data.setup()
+    formatted_calorie = int(data['calorie_count'])
+    formatted_calorie = f'{formatted_calorie:,}'
+    return render_template('index.html', calorie = formatted_calorie)
 
 @app.route('/query', methods = ['POST'])
 def query():

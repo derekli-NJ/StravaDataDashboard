@@ -31,7 +31,10 @@ def setup():
     queried_race_data = query_race_data()
     queried_hr_data = query_hr_data()
 
-    return {"hr_per_mile" : queried_hr_data, "vdot_race" : queried_race_data}
+
+    calorie_count = activity_data["Calorie_Count"]
+    print (calorie_count)
+    return {"hr_per_mile" : queried_hr_data, "vdot_race" : queried_race_data, "calorie_count" : calorie_count}
 
 def plot_vdot_race_fig(data):
     return plot_vdot_race(data)
